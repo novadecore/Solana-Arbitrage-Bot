@@ -136,6 +136,10 @@ Crypto-Arbitrage-Detector/
 
 
 ---
+## User Interface Workflow
+
+1. streamlit run app.py
+   
 
 ## Console Workflow
 
