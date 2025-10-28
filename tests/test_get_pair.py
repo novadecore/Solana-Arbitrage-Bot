@@ -28,8 +28,13 @@ async def test_edge_pairs() -> List[EdgePairs]:
     with open(pkl_path, "rb") as f:
         TokenLists: List[TokenInfo] = pickle.load(f)
     print(f" Loaded {len(TokenLists)} tokens from pickle file\n")
-    
-    edges: List[EdgePairs] = await get_edge_pairs(TokenLists)
+
+    proxies = [
+        "http://proxyuser:proxypass@127.0.0.1:3128"
+    ]
+
+    edges: List[EdgePairs] = await get_edge_pairs(TokenLists, proxies=proxies)
+
 
     print(f" Total edge pairs returned: {len(edges)}\n")
     

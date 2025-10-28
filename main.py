@@ -100,8 +100,8 @@ async def handle_option_3():
     print("You can either proceed with free requests (not guaranteed to work), or provide your own Jupiter Quote & Swap API endpoints and optional API key.")
     use_free = input("Do you want to proceed with free requests? (y/n) [default: y]: ").strip().lower()
     if use_free == "n":
-        quote_url = input("Enter Jupiter Quote API URL (e.g., https://quote-api.jup.ag/v6/quote): ").strip()
-        swap_url = input("Enter Jupiter Swap API URL (e.g., https://quote-api.jup.ag/v6/swap): ").strip()
+        quote_url = input("Enter Jupiter Quote API URL (e.g., https://lite-api.jup.ag/swap/v1/quote): ").strip()
+        swap_url = input("Enter Jupiter Swap API URL (e.g., https://lite-api.jup.ag/swap/v1/swap): ").strip()
         api_key = input("Enter your Jupiter API Key (if you have one): ").strip()
         print("✅ Custom Jupiter API configuration set.\n")
     else:
@@ -119,13 +119,17 @@ async def handle_option_3():
 
     print("\nFetching edge pairs...")
     try:
+        proxies = [
+        "http://proxyuser:proxypass@127.0.0.1:3128"
+        ]
         edges = await get_edge_pairs(
             selected_tokens, 
             base_amount, 
             api_key=api_key, 
             quote_url=quote_url, 
             swap_url=swap_url, 
-            solana_rpc=rpc_url
+            solana_rpc=rpc_url,
+            proxies=proxies
         )
     except Exception as e:
         pass

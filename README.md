@@ -175,7 +175,7 @@ Crypto-Arbitrage-Detector/
 3. Notes on Trading:
     * Make sure you have sufficient balance — ideally for all tokens involved in the arbitrage route.
 
-    * For free Jupiter API you are using https://quote-api.jup.ag/v6/swap and https://quote-api.jup.ag/v6/quote, it can not gurantee go through and will have strict rate limit per minute. Frequent requests to the Jupiter API may be interpreted as scraping and could lead to your IP being rate-limited or blocked.You can choose to upgrade for higher limits: https://portal.jup.ag/pricing.
+    * For free Jupiter API you are using https://lite-api.jup.ag/swap/v1/swap and https://lite-api.jup.ag/swap/v1/quote, it can not gurantee go through and will have strict rate limit per minute. Frequent requests to the Jupiter API may be interpreted as scraping and could lead to your IP being rate-limited or blocked.You can choose to upgrade for higher limits: https://portal.jup.ag/pricing.
 
     * For free Solana RPC You are using mainnet RPC (e.g., https://api.mainnet-beta.solana.com), a private/paid RPC can provide a better transaction speed and succeed rate.
 

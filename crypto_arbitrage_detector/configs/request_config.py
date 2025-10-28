@@ -23,7 +23,7 @@ jupiter_tokens_api = {
 
 # Jupiter quote API configuration for get_quote_pair
 jupiter_quote_api = {
-    "base_url": "https://quote-api.jup.ag/v6/quote",
+    "base_url": "https://lite-api.jup.ag/swap/v1/quote",
     "default_slippage_bps": 100,             # 1% slippage
     "default_tx_amount": 10000,          # 10000 units of input token
     "sol_mint": "So11111111111111111111111111111111111111112",
@@ -41,7 +41,7 @@ jupiter_quote_api = {
 
 # Jupiter swap API configuration for simulate_gas_fee and enrich_gas_fee
 jupiter_swap_api = {
-    "base_url": "https://quote-api.jup.ag/v6/swap",
+    "base_url": "https://lite-api.jup.ag/swap/v1/swap",
     "headers": {"Content-Type": "application/json"},
     "user_pubkey": "2ZwR1odHjrohqrTma9us4cHfGQcbCkVSnkJZo1MeDPU1",
     "max_request": 40,  # Maximum concurrent requests

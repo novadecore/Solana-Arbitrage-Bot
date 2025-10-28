@@ -248,13 +248,13 @@ if data_source == "💎 Premium API (Jupiter Membership Required)":
     
     quote_url = st.sidebar.text_input(
         "Quote URL",
-        value="https://quote-api.jup.ag/v6/quote",
+        value="https://lite-api.jup.ag/swap/v1/quote",
         help="Jupiter quote API endpoint"
     )
     
     swap_url = st.sidebar.text_input(
         "Swap URL", 
-        value="https://quote-api.jup.ag/v6/swap",
+        value="https://lite-api.jup.ag/swap/v1/swap",
         help="Jupiter swap API endpoint"
     )
 
@@ -534,7 +534,7 @@ with tab4:
         st.write("**API Endpoints:**")
         st.code("""
 Jupiter Tokens: https://cache.jup.ag/tokens
-Jupiter Quote: https://quote-api.jup.ag/v6/quote
+Jupiter Quote: https://lite-api.jup.ag/swap/v1/quote
         """)
     
     # Log messages
