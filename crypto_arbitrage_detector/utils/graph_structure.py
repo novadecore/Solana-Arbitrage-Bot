@@ -99,7 +99,7 @@ class TokenGraphBuilder:
                     raise ValueError(
                         f"Edge at index {i} has invalid total_fee: {edge.total_fee} (must be non-negative number)")
                         
-                if not isinstance(edge.gas_fee, int) or edge.gas_fee < 0:
+                if not isinstance(edge.gas_fee, (int, float)) or edge.gas_fee < 0:
                     raise ValueError(
                         f"Edge at index {i} has invalid gas_fee: {edge.gas_fee} (must be non-negative integer)")
 
