@@ -24,48 +24,6 @@ from crypto_arbitrage_detector.utils.data_structures import ArbitrageOpportunity
 from crypto_arbitrage_detector.algorithms.arbitrage_detector_integrated import IntegratedArbitrageDetector
 from data.historical_data import new_arbitrage_test_data
 
-# ---------- Edge validation helpers (add this) ----------
-import math
-
-def _is_finite_number(x) -> bool:
-    try:
-        return x is not None and isinstance(x, (int, float)) and math.isfinite(float(x))
-    except Exception:
-        return False
-
-def _edge_ok(e) -> bool:
-    # 基础字段
-    if not getattr(e, "from_token", None) or not getattr(e, "to_token", None):
-        return False
-    if e.from_token == e.to_token:
-        return False
-
-    # 数值字段
-    nums = [
-        getattr(e, "in_amount", None),
-        getattr(e, "out_amount", None),
-        getattr(e, "price_ratio", None),
-        getattr(e, "weight", None),
-    ]
-    if not all(_is_finite_number(v) for v in nums):
-        return False
-
-    # 业务约束
-    if e.in_amount <= 0 or e.out_amount <= 0 or e.price_ratio <= 0:
-        return False
-    return True
-
-def _sanitize_edges(edges):
-    clean, bad = [], []
-    for idx, e in enumerate(edges or []):
-        if _edge_ok(e):
-            clean.append(e)
-        else:
-            bad.append((idx, e))
-    return clean, bad
-# --------------------------------------------------------
-
-
 # Page configuration
 st.set_page_config(
     page_title="Solana Arbitrage Detector",
@@ -408,34 +366,13 @@ with col1:
                         st.info("💡 Please check your API key and endpoints")
                         st.stop()
             
-            # Build graph from edges (with sanitization)
-        if st.session_state.edges and len(st.session_state.edges) > 0:
-            clean_edges, bad_edges = _sanitize_edges(st.session_state.edges)
-
-            if bad_edges:
-                st.warning(f"⚠️ Skipped {len(bad_edges)} invalid edges before building the graph.")
-                # 显示第一个坏样本，便于排查
-                bad_idx, bad_edge = bad_edges[0]
-                st.caption("First invalid edge (index, object):")
-                st.code(str((bad_idx, bad_edge)))
-
-            if not clean_edges:
-                st.error("❌ All edges were invalid after filtering. Please check your data source or parameters.")
+            # Build graph from edges
+            if st.session_state.edges and len(st.session_state.edges) > 0:
+                st.session_state.graph = build_graph_from_edge_lists(st.session_state.edges)
+            else:
+                st.error("❌ No edges available to build graph. Please check your data source selection.")
                 st.session_state.graph = None
                 st.stop()
-
-            try:
-                st.session_state.graph = build_graph_from_edge_lists(clean_edges)
-            except Exception as e:
-                # 兜底：不要让 UI 崩；提示并停止后续检测
-                st.error(f"❌ Failed to build graph from edges: {e}")
-                st.session_state.graph = None
-                st.stop()
-        else:
-            st.error("❌ No edges available to build graph. Please check your data source selection.")
-            st.session_state.graph = None
-            st.stop()
-
         
         # Run detection if graph is available
         if st.session_state.graph is not None:
@@ -565,9 +502,9 @@ with tab3:
     st.subheader("📈 Token Price Graph Network")
     
     # Create a network graph for visualization
-    G = st.session_state.graph  # move this line up front
-
-    if G is not None and G.number_of_nodes() > 0:
+    if st.session_state.graph is not None and st.session_state.graph.number_of_nodes() > 0:
+        # Create Plotly network graph from the built graph
+        G = st.session_state.graph
         fig = visualize_graph_streamlit(G)
         st.plotly_chart(fig, use_container_width=True)
     else:
