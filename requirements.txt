@@ -49,3 +49,4 @@ aiohttp
 networkx
 numpy
 pandas
+streamlit
